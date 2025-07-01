@@ -107,7 +107,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       {instructionOpen && <div className="flex justify-end inset-10 z-10 fixed items-center sm:z-50">
         <img
         onClick={()=>setInstructionOpen(false)}
-          src="/instruction.jpg"
+          src="instruction.jpg"
           alt="Instructions"
           className="mx-auto sm:max-w-lg cursor-pointer"
         />
