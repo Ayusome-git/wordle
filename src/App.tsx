@@ -23,7 +23,6 @@ function App() {
 
   useEffect(()=>{
     const onKeyPress = (event: KeyboardEvent) => {
-      // Only handle Enter if input is not focused (optional)
       if (
         event.key === 'Enter' &&
         document.activeElement &&
@@ -103,7 +102,6 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       <div className='pl-4 cursor-pointer' onClick={()=>{setInstructionOpen(true)}}><CircleQuestionMarkIcon/></div>
       </div>
       <div className='flex flex-col gap-4 p-4'>
-        {/* Visible input for mobile and desktop */}
         <input
           type="text"
           inputMode="text"
