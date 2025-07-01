@@ -12,7 +12,7 @@ function App() {
   const [currentGuessIndex,setCurrentGuessIndex] = useState(0);
   const [gameEnded,setGameEnded] = useState(false);
   const [instructionOpen,setInstructionOpen] = useState(false);
-
+  let s="";
   useEffect(()=>{
     fetch('/words.txt')
       .then(res => res.text())
@@ -20,7 +20,7 @@ function App() {
         const words = text.split('\n').map(w => w.trim()).filter(Boolean);
         const randomWord = words[Math.floor(Math.random() * words.length)];
         setSolution(randomWord);
-        console.log(randomWord);
+        s=randomWord;
       });
   },[]);
 
@@ -67,7 +67,7 @@ function App() {
   useEffect(()=>{
     if(currentGuessIndex===5 && !guess.includes(solution)){
       setTimeout(() => {
-        alert(`Game over! The correct word was: ${solution}`);
+        alert(`Game over! The correct word was: ${s}`);
       }, 200);
       setGameEnded(true);
     }
