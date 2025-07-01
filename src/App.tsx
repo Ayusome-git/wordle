@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { CircleQuestionMarkIcon} from 'lucide-react';
@@ -33,9 +32,12 @@ function App() {
     setCurrentGuess(value);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const onKeyPress = (event: KeyboardEvent) => {
-      if(guess[5]!=null || guess.includes(solution)){
+      // Prevent double handling if input is focused (for mobile)
+      if (document.activeElement === inputRef.current) return;
+
+      if (guess[5] != null || guess.includes(solution)) {
         setGameEnded(true);
         return;
       }
@@ -50,7 +52,7 @@ function App() {
             guessClone[nextIndex] = prevGuess;
             setGuess(guessClone);
             setCurrentGuessIndex(nextIndex + 1);
-            if(guessClone.includes(solution)){
+            if (guessClone.includes(solution)) {
               setTimeout(() => {
                 alert("congrats")
                 setGameEnded(true);
@@ -58,20 +60,20 @@ function App() {
             }
           }
           return '';
-        } 
+        }
         else if (prevGuess.length < 5 && /^[a-zA-Z]$/.test(event.key)) {
           return prevGuess + event.key.toLowerCase();
-        } 
+        }
         else {
           return prevGuess.toLowerCase();
         }
       })
     }
 
-    window.addEventListener('keydown',onKeyPress);
-    
-    return ()=>window.removeEventListener('keydown',onKeyPress);
-  },[solution,guess,gameEnded])
+    window.addEventListener('keydown', onKeyPress);
+
+    return () => window.removeEventListener('keydown', onKeyPress);
+  }, [solution, guess, gameEnded])
 
   useEffect(()=>{
     if(currentGuessIndex===5 && !guess.includes(solution)){
@@ -110,7 +112,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
   );
 }
   return (
-    <>
+    <div className='w-fit h-fit'>
       <div className='flex justify-center items-center'>
       <div className='text-7xl pb-3'>Wordle</div>
       {instructionOpen && <div className="flex justify-end inset-10 z-10 fixed items-center sm:z-50">
@@ -144,21 +146,26 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
           tabIndex={-1}
         />
         {
-          guess.map((g, i) => (
-            <GuessLine
-              key={i}
-              g={(i === currentGuessIndex ? currentGuess : g ?? '').padEnd(5)}
-              solution={solution}
-              isFinal={currentGuessIndex > i || currentGuessIndex === -1}
-            />
-          ))
+          guess.map((g, i) => {
+            // Show currentGuess in the first empty row only
+            const firstEmpty = guess.findIndex(x => x == null);
+            const display = (i === firstEmpty) ? currentGuess.padEnd(5) : (g ?? '').padEnd(5);
+            return (
+              <GuessLine
+                key={i}
+                g={display}
+                solution={solution}
+                isFinal={currentGuessIndex > i || currentGuessIndex === -1}
+              />
+            );
+          })
         }
       </div>
       <div className='pt-2'>
       <button onClick={()=>{window.location.reload()}}>{gameEnded?"Play Again":"Refresh"}</button>
       </div>
       
-    </>
+    </div>
   )
 }
 
