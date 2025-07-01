@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import './App.css'
-import { CircleQuestionMarkIcon, X} from 'lucide-react';
+import { CircleQuestionMarkIcon} from 'lucide-react';
 
 
 
