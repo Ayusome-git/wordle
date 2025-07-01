@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import './App.css'
 import { CircleQuestionMarkIcon} from 'lucide-react';
@@ -113,6 +112,39 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       <div className='pl-4 cursor-pointer' onClick={()=>{setInstructionOpen(true)}}><CircleQuestionMarkIcon/></div>
       </div>
       <div className='flex flex-col gap-4 p-4'>
+        {/* Hidden input for mobile devices */}
+        <input
+          type="text"
+          inputMode="text"
+          maxLength={5}
+          autoFocus
+          value={currentGuess}
+          onChange={e => {
+            const value = e.target.value.replace(/[^a-zA-Z]/g, '').toLowerCase().slice(0, 5);
+            setCurrentGuess(value);
+          }}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && currentGuess.length === 5 && !gameEnded) {
+              const nextIndex = guess.findIndex(g => g == null);
+              if (nextIndex !== -1) {
+                const guessClone = [...guess];
+                guessClone[nextIndex] = currentGuess;
+                setGuess(guessClone);
+                setCurrentGuessIndex(nextIndex + 1);
+                if (guessClone.includes(solution)) {
+                  setTimeout(() => {
+                    alert("congrats");
+                    setGameEnded(true);
+                  }, 500);
+                }
+              }
+              setCurrentGuess('');
+            }
+          }}
+          style={{ opacity: 0, position: 'absolute', pointerEvents: 'none' }} // Hide input but keep it focusable
+          tabIndex={-1}
+          aria-hidden="true"
+        />
         {
           guess.map((g, i) => {
             return (
@@ -129,6 +161,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       <div className='pt-2'>
       <button onClick={()=>{window.location.reload()}}>{gameEnded?"Play Again":"Refresh"}</button>
       </div>
+      
       
     </div>
   )
