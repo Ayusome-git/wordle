@@ -23,43 +23,34 @@ function App() {
 
   useEffect(()=>{
     const onKeyPress = (event: KeyboardEvent) => {
-      if(guess[5]!=null || guess.includes(solution)){
-        setGameEnded(true);
-        return;
-      }
-      setCurrentGuess(prevGuess => {
-        if (event.key === 'Backspace') {
-          return prevGuess.slice(0, -1);
-        }
-        else if (event.key === 'Enter' && prevGuess.length === 5) {
+      // Only handle Enter if input is not focused (optional)
+      if (
+        event.key === 'Enter' &&
+        document.activeElement &&
+        (document.activeElement as HTMLElement).tagName !== 'INPUT'
+      ) {
+        if (currentGuess.length === 5 && !gameEnded) {
           const nextIndex = guess.findIndex(g => g == null);
           if (nextIndex !== -1) {
             const guessClone = [...guess];
-            guessClone[nextIndex] = prevGuess;
+            guessClone[nextIndex] = currentGuess;
             setGuess(guessClone);
             setCurrentGuessIndex(nextIndex + 1);
-            if(guessClone.includes(solution)){
+            if (guessClone.includes(solution)) {
               setTimeout(() => {
-                alert("congrats")
+                alert("congrats");
                 setGameEnded(true);
               }, 500);
             }
           }
-          return '';
-        } 
-        else if (prevGuess.length < 5 && /^[a-zA-Z]$/.test(event.key)) {
-          return prevGuess + event.key.toLowerCase();
-        } 
-        else {
-          return prevGuess.toLowerCase();
+          setCurrentGuess('');
         }
-      })
-    }
+      }
+    };
 
-    window.addEventListener('keydown',onKeyPress);
-    
-    return ()=>window.removeEventListener('keydown',onKeyPress);
-  },[solution,guess,gameEnded])
+    window.addEventListener('keydown', onKeyPress);
+    return () => window.removeEventListener('keydown', onKeyPress);
+  }, [solution, guess, gameEnded, currentGuess])
 
   useEffect(()=>{
     if(currentGuessIndex===5 && !guess.includes(solution)){
