@@ -112,7 +112,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       <div className='pl-4 cursor-pointer' onClick={()=>{setInstructionOpen(true)}}><CircleQuestionMarkIcon/></div>
       </div>
       <div className='flex flex-col gap-4 p-4'>
-        {/* Hidden input for mobile devices */}
+        {/* Visible input for mobile and desktop */}
         <input
           type="text"
           inputMode="text"
@@ -141,9 +141,9 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
               setCurrentGuess('');
             }
           }}
-          style={{ opacity: 0, position: 'absolute', pointerEvents: 'none' }} // Hide input but keep it focusable
-          tabIndex={-1}
-          aria-hidden="true"
+          className="border rounded p-2 text-2xl mb-4 w-40 mx-auto text-center"
+          placeholder="Type here"
+          style={{ letterSpacing: '0.5em' }}
         />
         {
           guess.map((g, i) => {
