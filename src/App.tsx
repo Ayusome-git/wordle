@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { CircleQuestionMarkIcon} from 'lucide-react';
 
@@ -12,6 +12,7 @@ function App() {
   const [currentGuessIndex,setCurrentGuessIndex] = useState(0);
   const [gameEnded,setGameEnded] = useState(false);
   const [instructionOpen,setInstructionOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   useEffect(()=>{
     fetch('/words.txt')
       .then(res => res.text())
@@ -21,6 +22,16 @@ function App() {
         setSolution(randomWord);
       });
   },[]);
+
+  const focusInput = () => {
+    inputRef.current?.focus();
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    if (value.length > 5) value = value.slice(0, 5);
+    setCurrentGuess(value);
+  };
 
   useEffect(()=>{
     const onKeyPress = (event: KeyboardEvent) => {
@@ -112,18 +123,35 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       </div>}
       <div className='pl-4 cursor-pointer' onClick={()=>{setInstructionOpen(true)}}><CircleQuestionMarkIcon/></div>
       </div>
-      <div className='flex flex-col gap-4 p-4'>
+      
+      <div className='flex flex-col gap-4 p-4' onClick={focusInput}>
+        {/* Hidden input for mobile keyboard */}
+        <input
+          ref={inputRef}
+          type="text"
+          inputMode="text"
+          autoFocus
+          maxLength={5}
+          value={currentGuess}
+          onChange={handleInputChange}
+          style={{
+            position: 'absolute',
+            opacity: 0,
+            pointerEvents: 'none',
+            height: 0,
+            width: 0,
+          }}
+          tabIndex={-1}
+        />
         {
-          guess.map((g, i) => {
-            return (
-              <GuessLine
-                key={i}
-                g={(i === currentGuessIndex ? currentGuess : g ?? '').padEnd(5)}
-                solution={solution}
-                isFinal={currentGuessIndex > i || currentGuessIndex === -1}
-              />
-            );
-          })
+          guess.map((g, i) => (
+            <GuessLine
+              key={i}
+              g={(i === currentGuessIndex ? currentGuess : g ?? '').padEnd(5)}
+              solution={solution}
+              isFinal={currentGuessIndex > i || currentGuessIndex === -1}
+            />
+          ))
         }
       </div>
       <div className='pt-2'>
