@@ -132,7 +132,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
               setCurrentGuess('');
             }
           }}
-          className="border rounded p-2 text-2xl mb-4 w-40 mx-auto text-center"
+          className="border rounded p-2 text-2xl mb-4 mx-auto text-center fixed h-64 w-64 opacity-0 cursor-none"
           placeholder="Type here"
           style={{ letterSpacing: '0.5em' }}
         />
