@@ -99,7 +99,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
   );
 }
   return (
-    <>
+    <div className='max-w-screen max-h-screen'>
       <div className='flex justify-center items-center'>
       <div className='text-7xl pb-3'>Wordle</div>
       {instructionOpen && <div className="flex justify-end inset-10 z-10 fixed items-center sm:z-50">
@@ -130,7 +130,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       <button onClick={()=>{window.location.reload()}}>{gameEnded?"Play Again":"Refresh"}</button>
       </div>
       
-    </>
+    </div>
   )
 }
 
