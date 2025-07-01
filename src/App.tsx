@@ -93,13 +93,13 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
       <div className='text-7xl pb-3'>Wordle</div>
       {instructionOpen && <div className="flex justify-end inset-10 z-10 fixed items-center sm:z-50">
         <img
-        onClick={()=>setInstructionOpen(false)}
+        onClick={()=>setInstructionOpen(!instructionOpen)}
           src="instruction.jpg"
           alt="Instructions"
           className="mx-auto sm:max-w-lg cursor-pointer"
         />
       </div>}
-      <div className='pl-4 cursor-pointer' onClick={()=>{setInstructionOpen(true)}}><CircleQuestionMarkIcon/></div>
+      <div className='pl-4 cursor-pointer' onClick={()=>{setInstructionOpen(!instructionOpen)}}><CircleQuestionMarkIcon/></div>
       </div>
       <div className='flex flex-col gap-4 p-4'>
         <input
@@ -148,7 +148,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
         }
       </div>
       <div className='pt-2'>
-      <button onClick={()=>{window.location.reload()}}>{gameEnded?"Play Again":"Refresh"}</button>
+      <button onClick={()=>{window.location.reload()}}>{gameEnded?"Play Again":"Reset"}</button>
       </div>
       
       
