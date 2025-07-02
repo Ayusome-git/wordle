@@ -147,8 +147,10 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
           })
         }
       </div>
-      <div className='pt-2'>
+      <div className='flex justify-center items-center'>
+      <div className='pt-15 absolute'>
       <button onClick={()=>{window.location.reload()}}>{gameEnded?"Play Again":"Reset"}</button>
+      </div>
       </div>
       
       
