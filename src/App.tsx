@@ -6,11 +6,11 @@ import { CircleQuestionMarkIcon} from 'lucide-react';
 
 function App() {
   const [solution, setSolution] = useState('');
-  const [guess,setGuess]= useState(Array(5).fill(null));
-  const [currentGuess,setCurrentGuess] = useState('');
-  const [currentGuessIndex,setCurrentGuessIndex] = useState(0);
-  const [gameEnded,setGameEnded] = useState(false);
-  const [instructionOpen,setInstructionOpen] = useState(false);
+  const [guess, setGuess] = useState(Array(6).fill(null));
+  const [currentGuess, setCurrentGuess] = useState('');
+  const [currentGuessIndex, setCurrentGuessIndex] = useState(0);
+  const [gameEnded, setGameEnded] = useState(false);
+  const [instructionOpen, setInstructionOpen] = useState(false);
   useEffect(()=>{
     fetch('/words.txt')
       .then(res => res.text())
@@ -52,13 +52,13 @@ function App() {
   }, [solution, guess, gameEnded, currentGuess])
 
   useEffect(()=>{
-    if(currentGuessIndex===5 && !guess.includes(solution)){
+    if (currentGuessIndex === 6 && !guess.includes(solution)) { 
       setTimeout(() => {
         alert(`Game over! The correct word was: ${solution}`);
       }, 200);
       setGameEnded(true);
     }
-  },[guess])
+  }, [guess])
   if(solution===null) return null;
 
   type GuessLineProps = {
@@ -130,7 +130,7 @@ function GuessLine({ g, solution, isFinal }: GuessLineProps) {
               setCurrentGuess('');
             }
           }}
-          className="border rounded p-2 text-2xl mb-4 mx-auto text-center fixed h-64 w-72 cursor-none pr-5 opacity-0"
+          className="border rounded p-2 text-2xl mb-4 mx-auto text-center fixed h-80 w-72 cursor-none pr-5 opacity-0"
           placeholder="Type here"
           style={{ letterSpacing: '0.5em' }}
         />
